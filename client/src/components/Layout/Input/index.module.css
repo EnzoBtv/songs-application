@@ -1,0 +1,21 @@
+.base-input {
+    background: transparent;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    font-size: 19px;
+    color: white;
+    padding: 7px;
+}
+
+.base-input option {
+    color: black;
+}
+
+.large-input {
+    width: 100%;
+}
+
+.medium-input {
+    width: 46%;
+}

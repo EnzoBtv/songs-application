@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const { join } = require("path");
 const Ddos = require("ddos");
 const logger = require("../util/Logger");
@@ -28,6 +29,7 @@ module.exports = class Server {
     async initMiddlewares() {
         this.app.use(express.json());
         this.app.use(new Ddos({ burst: 10, limit: 15 }).express);
+        this.app.use(cors());
     }
 
     async initControllers() {
