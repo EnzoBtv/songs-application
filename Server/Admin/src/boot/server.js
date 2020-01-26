@@ -1,6 +1,6 @@
 const express = require("express");
 const { join } = require("path");
-
+const Ddos = require("ddos");
 const logger = require("../util/Logger");
 
 const execPromise = require("../util/ChildPromise");
@@ -27,6 +27,7 @@ module.exports = class Server {
 
     async initMiddlewares() {
         this.app.use(express.json());
+        this.app.use(new Ddos({ burst: 10, limit: 15 }).express);
     }
 
     async initControllers() {
