@@ -6,39 +6,43 @@ const dbConfig = require("../config/database");
 const logger = require("../util/Logger");
 const execPromise = require("../util/ChildPromise");
 
-const connection = new Sequelize(dbConfig);
-
-(async () => {
-    try {
-        const models = await execPromise(
-            `ls ${join(__dirname, "..", "models")}`,
-            {}
-        );
-        const { stdout } = models;
-        const modelsArray = stdout.split("\n");
-
-        const modelsMap = {};
-
-        for (let i = modelsArray.length - 2; i >= 0; i--) {
-            const reqModel = require(join(
-                __dirname,
-                "..",
-                "models",
-                modelsArray[i]
-            ));
-            reqModel.init(connection);
-            modelsMap[modelsArray[i]] = reqModel;
-        }
-
-        for (let model in modelsMap) {
-            if (modelsMap[model].associate) {
-                modelsMap[model].associate(connection.models);
-            }
-        }
-    } catch (ex) {
-        logger.error("It wasn't possible to initialize the models");
-        throw new Error(ex.message);
+class Database {
+    constructor() {
+        this.connection = new Sequelize(dbConfig);
     }
-})();
 
-module.exports = connection;
+    async init() {
+        try {
+            const models = await execPromise(
+                `ls ${join(__dirname, "..", "models")}`,
+                {}
+            );
+            const { stdout } = models;
+            const modelsArray = stdout.split("\n");
+
+            const modelsMap = {};
+
+            for (let i = modelsArray.length - 2; i >= 0; i--) {
+                const reqModel = require(join(
+                    __dirname,
+                    "..",
+                    "models",
+                    modelsArray[i]
+                ));
+                reqModel.init(this.connection);
+                modelsMap[modelsArray[i]] = reqModel;
+            }
+
+            for (let model in modelsMap) {
+                if (modelsMap[model].associate) {
+                    modelsMap[model].associate(this.connection.models);
+                }
+            }
+        } catch (ex) {
+            logger.error("It wasn't possible to initialize the models");
+            throw new Error(ex.message);
+        }
+    }
+}
+
+module.exports = Database;

@@ -1,7 +1,7 @@
 const { Router } = require("express");
 
 const User = require("../models/User");
-
+const Songs = require("../entities/Songs");
 const { BAD_REQUEST, SUCCESS, CONFLICT } = require("../constants/HttpStatus");
 
 const logger = require("../util/Logger");
@@ -65,7 +65,11 @@ module.exports = class Submit {
 
             user = await User.create({ name });
 
-            user.addSongs();
+            songs = songs.map(song => {
+                return Songs.get(song.id);
+            });
+
+            user.addSongs(songs);
 
             return res.status(SUCCESS).json({ status: SUCCESS });
         } catch (e) {

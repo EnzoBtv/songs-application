@@ -5,7 +5,7 @@ const logger = require("../util/Logger");
 
 const execPromise = require("../util/ChildPromise");
 
-require("../database");
+const Database = require("../database");
 
 module.exports = class Server {
     constructor() {
@@ -13,6 +13,7 @@ module.exports = class Server {
     }
 
     async init() {
+        await new Database().init();
         this.listen();
         this.initMiddlewares();
         await this.initControllers();

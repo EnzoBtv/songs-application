@@ -16,7 +16,7 @@ class Song extends Model {
     }
 
     static associate(models) {
-        Song.belongsTo(models.User, {
+        Song.belongsToMany(models.User, {
             foreignKey: "song_id",
             through: "user_songs",
             as: "users"

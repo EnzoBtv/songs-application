@@ -12,10 +12,6 @@ const logger = require("./util/Logger");
 
 config({ path: resolve(__dirname, "../.env") });
 
-/** Entry point of the application. Responsible for clustering our Express ports to deliver a highly scalable and available service.
- * Here we also import our main Server class and instantiate an object of it with objects of each controller as its paramaters.
- */
-
 try {
     // if (cluster.isMaster) {
     //     for (let i = 0; i < Number(process.env.CORES); i++) cluster.fork();
