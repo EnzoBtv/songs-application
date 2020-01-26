@@ -1,7 +1,8 @@
 const { Router } = require("express");
-const { map } = require("bluebird");
+const { each } = require("bluebird");
+const { Op } = require("sequelize");
 const User = require("../models/User");
-const Songs = require("../entities/Songs");
+const Song = require("../models/Song");
 const {
     BAD_REQUEST,
     SUCCESS,
@@ -70,14 +71,14 @@ module.exports = class Submit {
 
             user = await User.create({ name });
 
-            songs = await map(songs, async song => {
-                const dbSong = Songs.get(song);
-                dbSong.points++;
-                await dbSong.save();
-                return dbSong;
+            await each(songs, async song => {
+                const songDb = await Song.findByPk(song);
+
+                songDb.points++;
+                await songDb.save();
             });
 
-            user.addSongs(songs);
+            songs = user.addSongs(songs);
 
             return res.status(SUCCESS).json({ status: SUCCESS });
         } catch (e) {

@@ -1,8 +1,8 @@
 module.exports = {
     dialect: "postgres",
-    host: process.env.DB_HOST,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    host: "localhost",
+    username: "root",
+    password: "root",
     database: "song-application",
     define: {
         timestamps: true,

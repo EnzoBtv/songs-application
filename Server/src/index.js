@@ -13,17 +13,17 @@ const logger = require("./util/Logger");
 config({ path: resolve(__dirname, "../.env") });
 
 try {
-    if (cluster.isMaster) {
-        for (let i = 0; i < Number(process.env.CORES); i++) cluster.fork();
+    // if (cluster.isMaster) {
+    //     for (let i = 0; i < Number(process.env.CORES); i++) cluster.fork();
 
-        cluster.on("exit", (deadWorker, code, signal) => {
-            logger.info(
-                `Worker "${deadWorker.process.pid}" killed - Reason: ${signal} - Code: ${code}. Initializing new worker of PID "${worker.process.pid}"`
-            );
-        });
+    //     cluster.on("exit", (deadWorker, code, signal) => {
+    //         logger.info(
+    //             `Worker "${deadWorker.process.pid}" killed - Reason: ${signal} - Code: ${code}. Initializing new worker of PID "${worker.process.pid}"`
+    //         );
+    //     });
 
-        return;
-    }
+    //     return;
+    // }
 
     new Server().init();
 } catch (e) {

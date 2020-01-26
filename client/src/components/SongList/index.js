@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./index.module.css";
 
-export default function CarsList(props) {
+export default function SongsList(props) {
     const { songs, search } = props;
     return (
         <div className={classes["list-container"]}>
