@@ -5,6 +5,7 @@
     margin-left: 14px;
     font-size: 18px;
     cursor: pointer;
+    transition: all 0.5s;
 }
 
 .button-white {
@@ -12,8 +13,19 @@
     background-color: #fff;
 }
 
+.button-white:hover {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
 .button-transparent {
     background-color: transparent;
     color: white;
     border: 1px solid white;
+}
+
+.button-transparent:hover {
+    color: #000;
+    background-color: #fff;
 }

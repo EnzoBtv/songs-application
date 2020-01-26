@@ -64,7 +64,7 @@ module.exports = class Submit {
             if (user) {
                 logger.error("Submit#store failed due to user duplicity");
                 return res.status(CONFLICT).json({
-                    errors: "There is already an user with the name registered"
+                    error: "There is already an user with the name registered"
                 });
             }
 

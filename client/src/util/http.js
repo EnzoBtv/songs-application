@@ -52,13 +52,9 @@ class HTTP {
     }
 
     async handleResponse(res) {
-        try {
-            let resData = await res.json();
-            if (res.status && (res.status + "").match(/^2/)) return resData;
-            throw new Error(resData.error || resData);
-        } catch (ex) {
-            console.log(ex);
-        }
+        let resData = await res.json();
+        if (res.status && (res.status + "").match(/^2/)) return resData;
+        throw new Error(resData.error || resData);
     }
 
     static parseParams(params) {
