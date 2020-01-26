@@ -7,7 +7,8 @@ class Song extends Model {
                 name: DataTypes.STRING,
                 artists: DataTypes.STRING,
                 genre: DataTypes.STRING,
-                duration: DataTypes.INTEGER
+                duration: DataTypes.INTEGER,
+                points: DataTypes.INTEGER
             },
             {
                 sequelize: connection

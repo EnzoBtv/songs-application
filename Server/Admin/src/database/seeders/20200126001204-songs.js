@@ -7,6 +7,7 @@ module.exports = {
             artists: song.artists,
             genre: song.genre,
             duration: song.duration_ms,
+            points: 0,
             created_at: new Date(),
             updated_at: new Date()
         }));

@@ -1,8 +1,13 @@
 const { Router } = require("express");
-
+const { map } = require("bluebird");
 const User = require("../models/User");
 const Songs = require("../entities/Songs");
-const { BAD_REQUEST, SUCCESS, CONFLICT } = require("../constants/HttpStatus");
+const {
+    BAD_REQUEST,
+    SUCCESS,
+    CONFLICT,
+    INTERNAL_SERVER_ERROR
+} = require("../constants/HttpStatus");
 
 const logger = require("../util/Logger");
 module.exports = class Submit {
@@ -16,9 +21,9 @@ module.exports = class Submit {
         this.router.post(this.path, this.store);
     }
 
-    async store() {
+    async store(req, res) {
         try {
-            const { name, songs } = req.body;
+            let { name, songs } = req.body;
 
             logger.info(
                 `Attempting to create a submit of an user with name ${name}`
@@ -65,8 +70,11 @@ module.exports = class Submit {
 
             user = await User.create({ name });
 
-            songs = songs.map(song => {
-                return Songs.get(song.id);
+            songs = await map(songs, async song => {
+                const dbSong = Songs.get(song);
+                dbSong.points++;
+                await dbSong.save();
+                return dbSong;
             });
 
             user.addSongs(songs);
@@ -75,7 +83,7 @@ module.exports = class Submit {
         } catch (e) {
             logger.error(e.message || e);
             logger.error(__filename);
-            return res.status(INTERNAL_ERROR).send(INTERNAL_SERVER_ERROR);
+            return res.status(INTERNAL_SERVER_ERROR).send({ error: e.message });
         }
     }
 };
