@@ -7,7 +7,7 @@ do
   sleep 1
 done
 
-sleep 20
+sleep 60
 {
     /usr/backend/node_modules/.bin/sequelize db:create && /usr/backend/node_modules/.bin/sequelize db:migrate && /usr/backend/node_modules/.bin/sequelize db:seed:all && node ./src
 } || {

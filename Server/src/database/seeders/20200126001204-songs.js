@@ -1,7 +1,9 @@
 "use strict";
 let songs = require("../../../songs.json");
 module.exports = {
-    up: (queryInterface, Sequelize) => {
+    up: async (queryInterface, Sequelize) => {
+        await queryInterface.bulkDelete("songs", null, {});
+
         songs = songs.map(song => ({
             name: song.name,
             artists: song.artists,
